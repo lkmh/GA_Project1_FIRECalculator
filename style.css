@@ -1,3 +1,7 @@
 body {
     margin: 50px;
 }
+
+#myChart {
+    height: 500px;
+}

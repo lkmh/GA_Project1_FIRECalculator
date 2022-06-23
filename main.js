@@ -17,22 +17,34 @@ function updateInput(){
         
     }
     if (Object.keys(inputDict).length === 9) {
-        targetRetireValue = calTarget(inputDict.RetireSpending, inputDict.SWR)
+        let chartStatus = Chart.getChart("myChart"); // <canvas> id
+        if (chartStatus != undefined) {
+        chartStatus.destroy();
+        }
+        const targetRetireValue = calTarget(inputDict.RetireSpending, inputDict.SWR)
         // console.log("Target",targetRetireValue)
         // console.log(inputDict.age, inputDict.takeHomePay, inputDict.AnnualSpending, inputDict.CurrentNetWorth, inputDict.Inflation, inputDict.ExpectedReturn)
         const chartArr = calSeries(inputDict.age, inputDict.takeHomePay, inputDict.AnnualSpending, inputDict.CurrentNetWorth, inputDict.Inflation, inputDict.ExpectedReturn)
-
-        createChart(chartArr)
-        document.getElementById("first").innerHTML = "testet"
-        console.log("Retirement Reach in",checkNumYear(targetRetireValue, chartArr[1]))
+        const yearToFI = checkNumYear(targetRetireValue, chartArr[1])
+        const yearToPlot = inputDict.age + yearToFI + 20 // 20 as buffer
+        chartArr[0] = chartArr[0].slice(0,yearToPlot) 
+        chartArr[1] = chartArr[1].slice(0,yearToPlot) 
+        createChart(chartArr, targetRetireValue,yearToPlot)
+        
+        const string = `You can reach Financial Independence in ${yearToFI} year with $${targetRetireValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`
+        document.getElementById("first").innerHTML = string
     }
-
-
 }
 
 
-function createChart(data){
-    const ctx = document.getElementById('myChart');
+function createChart(data, target){
+    const ctx = document.getElementById('myChart')
+    const footer = (tooltipItems) => {
+        let sum = 0;
+        sum = tooltipItems[0].parsed.y - tooltipItems[1].parsed.y
+        
+        return 'Gap: $' + sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      };
     const myChart = new Chart(ctx, {
         type: 'line',
         data:{
@@ -48,7 +60,7 @@ function createChart(data){
             },
         {
                 label: 'Fire Target',
-                data: Array(data[1].length).fill(1000000),
+                data: Array(data[1].length).fill(target),
                 borderColor: "#8e5ea2",
                 fill: false
             }
@@ -62,14 +74,38 @@ function createChart(data){
         title: {
             display: true,
             text: 'Fire Goals'
-        }, //WORK on tooltips - show both networth and detla on the same tip
+        }, 
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Age'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Networth'
+                }
+            },
+        },
+        plugins: {
+            tooltip: {
+              callbacks: {
+                footer: footer,
+              }
+            }
+          }//WORK on tooltips - show both networth and detla on the same tip
     }
     }
     )
 }
 
 function checkNumYear(target, arr){
+    
     const isLargeNumber = (element) => element > target
+    console.log(target)
+    console.log(arr[arr.findIndex(isLargeNumber)])
     return arr.findIndex(isLargeNumber)
 }
 
@@ -85,7 +121,7 @@ function calSeries(age, takeHomePay, AnnualSpending, CurrentNetworth, Inflation,
     //  hardcoded retirement age as 92 // 
     const netReturn =  ExpectedReturn-Inflation
     const netSavings = takeHomePay - AnnualSpending
-    while (age < 80) {
+    while (age < 70) {
         newNetWorth = 0 
         newNetWorth = CurrentNetworth * (1+(netReturn/100)) + (netSavings)
         netWorthSeries.push(Math.round(newNetWorth))
@@ -108,3 +144,31 @@ function inputValue(){
     }
     updateInput()
 }
+
+const alphavantageKey = ['NA77STNM2IHMFJSF']
+
+
+const generateQueryUrl = queryTerm => {
+    return `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${queryTerm}&apikey=NA77STNM2IHMFJSF`
+}
+const fetchData = async(ticker,numYear) => {
+    try {
+        const response = await fetch(generateQueryUrl(ticker))
+        const data = await response.json()
+        // console.log(data)
+        renderStock(data,numYear)
+    } catch (err) {
+        console.log('err: ', err)
+    }
+}
+
+const renderStock = (data,numYear) => {
+    const listOfDate = Object.keys(data['Monthly Adjusted Time Series'])
+    const firstDate = listOfDate[1] // 0 is not a month end 
+    const lastDate = listOfDate[1+numYear*12] /// 5 for 5 years 
+    const finalIndex = data['Monthly Adjusted Time Series'][firstDate]['5. adjusted close']
+    const initialIndex =  data['Monthly Adjusted Time Series'][lastDate]['5. adjusted close']
+    console.log(((finalIndex/initialIndex)**(1/numYear)-1)*100)
+}
+
+fetchData('voo',5)

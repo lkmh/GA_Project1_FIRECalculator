@@ -2,6 +2,9 @@ body {
     margin: 50px;
 }
 
-#myChart {
-    height: 500px;
+.chart-container {
+    width: 1000px;
+    height:600px;
+    responsive:true;
+    maintainAspectRatio: false 
 }

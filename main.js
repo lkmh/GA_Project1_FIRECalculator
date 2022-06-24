@@ -4,6 +4,39 @@
  //   console.log()
 //}
 
+// how to loop across a few inputs
+const inputArrDollar = ['takeHomePay','AnnualSpending','RetireSpending','CurrentNetWorth'] 
+const inputArrDollarLen = inputArrDollar.length 
+for (let i = 0; i < inputArrDollarLen; i++ ){
+    const idTag = '#' + inputArrDollar[i]
+    console.log(idTag)
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        let autoNumericInstance = new AutoNumeric(idTag, {
+        currencySymbol : '$',
+        digitGroupSeparator : ',',
+        maximumValue: "10000000",
+        minimumValue: "0"
+    });
+    })
+}
+
+const inputArrPerc = ['ExpectedReturn','SWR','Inflation','IncomeGrowthRate'] 
+const inputArrPercLen = inputArrPerc.length 
+for (let i = 0; i < inputArrPercLen; i++ ){
+    const idTag = '#' + inputArrPerc[i]
+    console.log(idTag)
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        let autoNumericInstance = new AutoNumeric(idTag, {
+        suffixText: "%",
+        maximumValue: "20",
+        minimumValue: "0",
+        decimalPlaces: 1,
+    });
+    })
+}
+
+
+
 function updateInput(){
     const inputArr = ['age','takeHomePay','AnnualSpending','RetireSpending','CurrentNetWorth','SWR','Inflation','IncomeGrowthRate','ExpectedReturn'] 
     const inputArrLen = inputArr.length 
@@ -11,7 +44,8 @@ function updateInput(){
     for (let i = 0; i < inputArrLen; i++ ){
         if (document.getElementById(inputArr[i]).value) {
             // why does JS take the number as a string not a number
-            inputDict[inputArr[i]] =  parseFloat(document.getElementById(inputArr[i]).value)
+            const idTag = '#' + inputArr[i]
+            inputDict[inputArr[i]] =  parseFloat(document.getElementById(inputArr[i]).value) || AutoNumeric.getNumber(idTag);
             console.log(inputDict)
         }
         
@@ -121,7 +155,7 @@ function checkNumYear(target, arr){
 }
 
 function calTarget(RetireSpending, SWR) {
-    return RetireSpending/ (SWR/100)
+    return Math.round(RetireSpending/ (SWR/100))
 }
 
 function calSeries(age, takeHomePay, AnnualSpending, CurrentNetworth, Inflation, ExpectedReturn) {

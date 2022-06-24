@@ -18,19 +18,19 @@
           </div>
           <div class="col-md-3">
             <label for="takeHomePay">Take Home</label>
-            <input type="number" id="takeHomePay" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="60000">
+            <input type="text" id="takeHomePay" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="60000">
           </div>
           <div class="col-md-2">
               <label for="AnnualSpending">Annual Spending</label>
-              <input type="number" id="AnnualSpending" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="30000">
+              <input type="text" id="AnnualSpending" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="30000">
             </div>
           <div class="col-md-2">
               <label for="RetireSpending">Retire Spending</label>
-              <input type="number" id="RetireSpending" min="0" max="1000000" step="1000"  onchange="updateInput(this.value)" class="form-control" placeholder="24000">
+              <input type="text" id="RetireSpending" min="0" max="1000000" step="1000"  onchange="updateInput(this.value)" class="form-control" placeholder="24000">
           </div>
           <div class="col-md-3">
               <label for="CurrentNetWorth">Current Net Worth</label>
-              <input type="number" id="CurrentNetWorth" min="0" max="10000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="100000">
+              <input type="text" id="CurrentNetWorth" min="0" max="10000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="100000">
           </div>
       </div>
 
@@ -52,22 +52,22 @@
       </div>
       <div class="col-md-4">
           <label for="Expected Return">Expected Return</label>
-          <input type="number" id="ExpectedReturn"  onchange="updateInput(this.value)" class="form-control" placeholder="8%">
+          <input type="text" id="ExpectedReturn"  onchange="updateInput(this.value)" class="form-control" placeholder="8%">
       </div>
     </div>
 
     <div class="row">
           <div class="col-md-4">
               <label for="SafeWithdrawalRate">Safe Withdrawal Rate</label>
-              <input type="number" id="SWR" onchange="updateInput(this.value)"  class="form-control" placeholder="4%">
+              <input type="text" id="SWR" onchange="updateInput(this.value)"  class="form-control" placeholder="4%">
           </div>
           <div class="col-md-4">
               <label for="InflationRate">Inflation Rate</label>
-              <input type="number" id="Inflation" onchange="updateInput(this.value)" class="form-control" placeholder="3%">
+              <input type="text" id="Inflation" onchange="updateInput(this.value)" class="form-control" placeholder="3%">
           </div>
           <div class="col-md-4">
               <label for="IncomeGrowthRate">Income Growth Rate</label>
-              <input type="number" id="IncomeGrowthRate" onchange="updateInput(this.value)"  class="form-control" placeholder="2%">
+              <input type="text" id="IncomeGrowthRate" onchange="updateInput(this.value)"  class="form-control" placeholder="2%">
           </div>
     </div>
 
@@ -92,6 +92,7 @@
    
 
     <script src="main.js"></script>
+    <script src = "https://unpkg.com/autonumeric" ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

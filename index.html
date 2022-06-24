@@ -9,53 +9,83 @@
 </head>
   <body>
     <h1>FIRE Calculator</h1>
-    <!-- how to set min and max number <input type="number" min="0" step="5" max="100">--> 
-    <!-- how to set % at the end -->
-    <!-- how to set 4 inputs per row  -->
-    <div class="row g-4">
-        <div class="col-auto">
-            <label for="age">Current Age</label>
-            <input type="number" id="age" onchange="updateInput(this.value)" class="form-control" placeholder="35">
-        </div>
-        <div class="col-auto">
-          <label for="takeHomePay">Take Home</label>
-          <input type="number" id="takeHomePay" onchange="updateInput(this.value)" class="form-control" placeholder="60000">
-        </div>
-        <div class="col-auto">
-            <label for="AnnualSpending">Annual Spending</label>
-            <input type="number" id="AnnualSpending" onchange="updateInput(this.value)" class="form-control" placeholder="30000">
+    <!-- alignment out of  -->
+    <div class="container">
+      <div class="row">
+          <div class="col-md-2">
+              <label for="age">Current Age</label>
+              <input type="number" min="0" max="100" step="1" id="age" onchange="updateInput(this.value)" class="form-control" data-toggle="tooltip" data-placement="top" title="This is the text of the tooltip" placeholder="35">
           </div>
-        <div class="col-auto">
-            <label for="RetireSpending">Retire Spending</label>
-            <input type="number" id="RetireSpending"  onchange="updateInput(this.value)" class="form-control" placeholder="24000">
+          <div class="col-md-3">
+            <label for="takeHomePay">Take Home</label>
+            <input type="number" id="takeHomePay" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="60000">
+          </div>
+          <div class="col-md-2">
+              <label for="AnnualSpending">Annual Spending</label>
+              <input type="number" id="AnnualSpending" min="0" max="1000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="30000">
+            </div>
+          <div class="col-md-2">
+              <label for="RetireSpending">Retire Spending</label>
+              <input type="number" id="RetireSpending" min="0" max="1000000" step="1000"  onchange="updateInput(this.value)" class="form-control" placeholder="24000">
+          </div>
+          <div class="col-md-3">
+              <label for="CurrentNetWorth">Current Net Worth</label>
+              <input type="number" id="CurrentNetWorth" min="0" max="10000000" step="1000" onchange="updateInput(this.value)" class="form-control" placeholder="100000">
+          </div>
+      </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="dropdown">
+          <!-- drop down not working   -->
+          <label for="ExpectReturnSelection">Obtain Expected Return</label>
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Asset Allocation
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">USA - 10 years</a>
+            <a class="dropdown-item" href="#">World - 10 years</a>
+            <a class="dropdown-item" href="#">Asia - 10 years</a>
+          </div>
         </div>
-        <div class="col-auto">
-            <label for="CurrentNetWorth">Current Net Worth</label>
-            <input type="number" id="CurrentNetWorth"  onchange="updateInput(this.value)" class="form-control" placeholder="100000">
-        </div>
-        <div class="col-auto">
-            <label for="SafeWithdrawalRate">Safe Withdrawal Rate</label>
-            <input type="number" id="SWR" onchange="updateInput(this.value)"  class="form-control" placeholder="4%">
-        </div>
-        <div class="col-auto">
-            <label for="InflationRate">Inflation Rate</label>
-            <input type="number" id="Inflation" onchange="updateInput(this.value)" class="form-control" placeholder="3%">
-        </div>
-        <div class="col-auto">
-            <label for="IncomeGrowthRate">Income Growth Rate</label>
-            <input type="number" id="IncomeGrowthRate" onchange="updateInput(this.value)"  class="form-control" placeholder="2%">
-        </div>
-        <div class="col-auto">
-            <label for="Expected Return">Expected Return</label>
-            <input type="number" id="ExpectedReturn"  onchange="updateInput(this.value)" class="form-control" placeholder="8%">
-        </div>
+      </div>
+      <div class="col-md-4">
+          <label for="Expected Return">Expected Return</label>
+          <input type="number" id="ExpectedReturn"  onchange="updateInput(this.value)" class="form-control" placeholder="8%">
+      </div>
     </div>
-    <button type="button" class="btn btn-primary" id="fill" onclick="inputValue()">Primary</button>
-    
+
+    <div class="row">
+          <div class="col-md-4">
+              <label for="SafeWithdrawalRate">Safe Withdrawal Rate</label>
+              <input type="number" id="SWR" onchange="updateInput(this.value)"  class="form-control" placeholder="4%">
+          </div>
+          <div class="col-md-4">
+              <label for="InflationRate">Inflation Rate</label>
+              <input type="number" id="Inflation" onchange="updateInput(this.value)" class="form-control" placeholder="3%">
+          </div>
+          <div class="col-md-4">
+              <label for="IncomeGrowthRate">Income Growth Rate</label>
+              <input type="number" id="IncomeGrowthRate" onchange="updateInput(this.value)"  class="form-control" placeholder="2%">
+          </div>
+    </div>
+
+          
+  
+  </div>
+    <br>
+    <button type="button" class="btn btn-primary" id="fill" onclick="inputValue()">test input data</button>
+    <br>
     <div>
-      <h2 id="first">You can retire in 5 years with a FIRE target of $10000000</h2>
+      <h2 id="first">When can I finally stop working ?</h2>
     </div>
+
+
+  
     
+  
+
     <div class="chart-container">
       <canvas id="myChart"></canvas> 
     </div>
@@ -63,8 +93,9 @@
 
     <script src="main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    
   </body>
 </html>

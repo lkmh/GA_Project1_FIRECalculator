@@ -31,7 +31,7 @@ function updateInput(){
         chartArr[1] = chartArr[1].slice(0,yearToPlot) 
         createChart(chartArr, targetRetireValue,yearToPlot)
         
-        const string = `You can reach Financial Independence in ${yearToFI} year with $${targetRetireValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`
+        const string = `You can reach Financial Independence in ${yearToFI} years with $${targetRetireValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`
         document.getElementById("first").innerHTML = string
     }
 }
@@ -80,14 +80,25 @@ function createChart(data, target){
                 title: {
                     display: true,
                     text: 'Age'
+                },
+                ticks: {
+                    maxTicksLimit: 15
                 }
             },
             y: {
                 title: {
                     display: true,
                     text: 'Networth'
+                },
+                ticks: {
+                    maxTicksLimit: 10
                 }
             },
+            // xAxis: {
+            //     ticks: {
+            //         maxTicksLimit: 20
+            //     }
+            // }
         },
         plugins: {
             tooltip: {
@@ -164,11 +175,12 @@ const fetchData = async(ticker,numYear) => {
 
 const renderStock = (data,numYear) => {
     const listOfDate = Object.keys(data['Monthly Adjusted Time Series'])
-    const firstDate = listOfDate[1] // 0 is not a month end 
-    const lastDate = listOfDate[1+numYear*12] /// 5 for 5 years 
+    const firstDate = listOfDate[1]
+    const lastDate = listOfDate[1+numYear*12] 
     const finalIndex = data['Monthly Adjusted Time Series'][firstDate]['5. adjusted close']
     const initialIndex =  data['Monthly Adjusted Time Series'][lastDate]['5. adjusted close']
     console.log(((finalIndex/initialIndex)**(1/numYear)-1)*100)
 }
 
 fetchData('voo',5)
+

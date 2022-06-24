@@ -3,8 +3,10 @@ body {
 }
 
 .chart-container {
-    width: 1000px;
-    height:600px;
-    responsive:true;
-    maintainAspectRatio: false 
+    width: auto;
+
+}
+
+#first {
+    text-align: center;
 }

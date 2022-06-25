@@ -17,3 +17,7 @@ body {
     border-bottom: 1px dotted black;
 }
   
+
+#emailData {
+    display: none;
+}

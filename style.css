@@ -1,23 +1,22 @@
 body {
-    margin: 50px;
+  margin: 50px;
 }
 
 .chart-container {
-    width: auto;
+  width: auto;
 
 }
 
 #first {
-    text-align: center;
+  text-align: center;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
   
-
 #emailData {
-    display: none;
+  display: none;
 }

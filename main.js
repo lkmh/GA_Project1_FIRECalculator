@@ -4,7 +4,6 @@
  //   console.log()
 //}
 
-// how to loop across a few inputs
 const inputArrDollar = ['takeHomePay','AnnualSpending','RetireSpending','CurrentNetWorth'] 
 const inputArrDollarLen = inputArrDollar.length 
 for (let i = 0; i < inputArrDollarLen; i++ ){
@@ -35,6 +34,10 @@ for (let i = 0; i < inputArrPercLen; i++ ){
     })
 }
 
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 
 
 function updateInput(){
@@ -190,12 +193,11 @@ function inputValue(){
     updateInput()
 }
 
-const alphavantageKey = ['NA77STNM2IHMFJSF']
-
-
+//const alphavantageKey = ['NA77STNM2IHMFJSF']
 const generateQueryUrl = queryTerm => {
     return `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${queryTerm}&apikey=NA77STNM2IHMFJSF`
 }
+
 const fetchData = async(ticker,numYear) => {
     try {
         const response = await fetch(generateQueryUrl(ticker))
@@ -207,14 +209,42 @@ const fetchData = async(ticker,numYear) => {
     }
 }
 
-const renderStock = (data,numYear) => {
+
+
+
+
+function dropDownChange() {
+    const selectValue = document.getElementById("investmentSelect")
+    if (selectValue.value != 'Based 10-yr historical returns on') {
+        console.log(requestData(selectValue.value,10))
+    }
+}
+
+
+
+function getURL(queryTerm) {
+    return `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${queryTerm}&apikey=NA77STNM2IHMFJSF`
+}
+async function requestData (ticker,numYear) {
+    try {
+        const response = await fetch(getURL(ticker))
+        const data = await response.json()
+        console.log(data)
+        renderStock(data,numYear)
+    } catch (err) {
+        console.log('err: ', err)
+    }
+
+}
+
+
+function renderStock (data,numYear) {
     const listOfDate = Object.keys(data['Monthly Adjusted Time Series'])
     const firstDate = listOfDate[1]
     const lastDate = listOfDate[1+numYear*12] 
     const finalIndex = data['Monthly Adjusted Time Series'][firstDate]['5. adjusted close']
     const initialIndex =  data['Monthly Adjusted Time Series'][lastDate]['5. adjusted close']
-    console.log(((finalIndex/initialIndex)**(1/numYear)-1)*100)
+    const outputReturn = ((finalIndex/initialIndex)**(1/numYear)-1)*100
+    document.getElementById("ExpectedReturn").value = outputReturn.toFixed(1)
+
 }
-
-fetchData('voo',5)
-

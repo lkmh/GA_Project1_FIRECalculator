@@ -28,20 +28,18 @@
             max="100"
             step="1"
             id="age"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="35"
           />
         </div>
         <div class="col-md-3">
-          <label for="takeHomePay">Take Home Pay</label>
+          <label for="take-home-pay">Take Home Pay</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Input Annual Salary (Post Tax)"
-            id="takeHomePay"
-            onchange="updateInput(this.value)"
+            id="take-home-pay"
             class="form-control"
             placeholder="$60,000"
           />
@@ -54,7 +52,6 @@
             data-bs-placement="top"
             title="Input Annual Expenses"
             id="AnnualSpending"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$36,000"
           />
@@ -67,7 +64,6 @@
             data-bs-placement="top"
             title="Input Est Retirement Annual Expenses"
             id="RetireSpending"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$24,000"
           />
@@ -80,7 +76,6 @@
             data-bs-placement="top"
             title="Input liquid investable networth"
             id="CurrentNetWorth"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$100,000"
           />
@@ -95,7 +90,6 @@
             >
             <select
               id="investmentSelect"
-              onchange="dropDownChange()"
               class="form-select"
               aria-label="Default select example"
             >
@@ -111,7 +105,6 @@
             type="text"
             eadonly="readonly"
             id="ExpectedReturn"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="Based on Selection"
           />
@@ -127,7 +120,6 @@
             data-bs-placement="top"
             title="Should be between 3-4%"
             id="SWR"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="4%"
           />
@@ -140,7 +132,6 @@
             data-bs-placement="top"
             title="Historically 2-4%"
             id="Inflation"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="3%"
           />
@@ -153,7 +144,6 @@
             data-bs-placement="top"
             title="Expected Annual Pay Increment in %"
             id="IncomeGrowthRate"
-            onchange="updateInput(this.value)"
             class="form-control"
             placeholder="2%"
           />
@@ -197,7 +187,7 @@
       <canvas id="myChart"></canvas>
     </div>
 
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
       integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"

@@ -1,62 +1,56 @@
-//function updateInput(){
-//    const idName = event.target.id
-//   const age = document.getElementById(idName).value;
-//   console.log()
-//}
+// const inputArrDollar = [
+//   "take-home-pay",
+//   "annual-spending",
+//   "retire-spending",
+//   "current-networth"
+// ];
+// const inputArrDollarLen = inputArrDollar.length;
+// for (let i = 0; i < inputArrDollarLen; i++) {
+//   const idTag = "#" + inputArrDollar[i];
+//   console.log(idTag);
+//   document.addEventListener("DOMContentLoaded", function (event) {
+//     let autoNumericInstance = new AutoNumeric(idTag, {
+//       currencySymbol: "$",
+//       digitGroupSeparator: ",",
+//       maximumValue: "10000000",
+//       minimumValue: "0",
+//     });
+//   });
+// }
 
-const inputArrDollar = [
-  "takeHomePay",
-  "AnnualSpending",
-  "RetireSpending",
-  "CurrentNetWorth",
-];
-const inputArrDollarLen = inputArrDollar.length;
-for (let i = 0; i < inputArrDollarLen; i++) {
-  const idTag = "#" + inputArrDollar[i];
-  console.log(idTag);
-  document.addEventListener("DOMContentLoaded", function (event) {
-    let autoNumericInstance = new AutoNumeric(idTag, {
-      currencySymbol: "$",
-      digitGroupSeparator: ",",
-      maximumValue: "10000000",
-      minimumValue: "0",
-    });
-  });
-}
+// const inputArrPerc = ["expected-return", "SWR", "inflation", "income-growth-rate"];
+// const inputArrPercLen = inputArrPerc.length;
+// for (let i = 0; i < inputArrPercLen; i++) {
+//   const idTag = "#" + inputArrPerc[i];
+//   console.log(idTag);
+//   document.addEventListener("DOMContentLoaded", function (event) {
+//     let autoNumericInstance = new AutoNumeric(idTag, {
+//       suffixText: "%",
+//       maximumValue: "20",
+//       minimumValue: "0",
+//       decimalPlaces: 1
+//     });
+//   });
+// }
 
-const inputArrPerc = ["ExpectedReturn", "SWR", "Inflation", "IncomeGrowthRate"];
-const inputArrPercLen = inputArrPerc.length;
-for (let i = 0; i < inputArrPercLen; i++) {
-  const idTag = "#" + inputArrPerc[i];
-  console.log(idTag);
-  document.addEventListener("DOMContentLoaded", function (event) {
-    let autoNumericInstance = new AutoNumeric(idTag, {
-      suffixText: "%",
-      maximumValue: "20",
-      minimumValue: "0",
-      decimalPlaces: 1,
-    });
-  });
-}
-
-let tooltipTriggerList = [].slice.call(
-  document.querySelectorAll('[data-bs-toggle="tooltip"]')
-);
-let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl);
-});
+// let tooltipTriggerList = [].slice.call(
+//   document.querySelectorAll('[data-bs-toggle="tooltip"]')
+// );
+// let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+//   return new bootstrap.Tooltip(tooltipTriggerEl);
+// });
 
 function updateInput() {
   const inputArr = [
     "age",
-    "takeHomePay",
-    "AnnualSpending",
-    "RetireSpending",
-    "CurrentNetWorth",
+    "take-home-pay",
+    "annual-spending",
+    "retire-spending",
+    "current-networth",
     "SWR",
-    "Inflation",
-    "IncomeGrowthRate",
-    "ExpectedReturn",
+    "inflation",
+    // "income-growth-rate",
+    "expected-return"
   ];
   const inputArrLen = inputArr.length;
   const inputDict = {};
@@ -70,13 +64,13 @@ function updateInput() {
       console.log(inputDict);
     }
   }
-  if (Object.keys(inputDict).length === 9) {
+  if (Object.keys(inputDict).length === 8) {
     let chartStatus = Chart.getChart("myChart"); // <canvas> id
     if (chartStatus != undefined) {
       chartStatus.destroy();
     }
     const targetRetireValue = calTarget(
-      inputDict.RetireSpending,
+      inputDict['retire-spending'],
       inputDict.SWR
     );
     // console.log("Target",targetRetireValue)
@@ -85,11 +79,11 @@ function updateInput() {
 
     const chartArr = calSeries(
       inputDict.age,
-      inputDict.takeHomePay,
-      inputDict.AnnualSpending,
-      inputDict.CurrentNetWorth,
-      inputDict.Inflation,
-      inputDict.ExpectedReturn
+      inputDict['take-home-pay'],
+      inputDict['annual-spending'],
+      inputDict['current-networth'],
+      inputDict['inflation'],
+      inputDict['expected-return']
     );
     const yearToFI = checkNumYear(targetRetireValue, chartArr[1]);
     const yearToPlot = inputDict.age + yearToFI + 20; // 20 as buffer
@@ -97,7 +91,7 @@ function updateInput() {
     chartArr[1] = chartArr[1].slice(0, yearToPlot);
     createChart(chartArr, targetRetireValue, yearToPlot);
 
-    const string = `You can reach Financial Independence in ${yearToFI} years with $${targetRetireValue
+    const string = `You will reach Financial Independence in ${yearToFI} years with $${targetRetireValue
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`;
     document.getElementById("first").innerHTML = string;
@@ -108,6 +102,7 @@ function updateInput() {
 }
 
 function createChart(data, target) {
+  document.getElementById("myChart").style.display = "block"
   const ctx = document.getElementById("myChart");
   const footer = (tooltipItems) => {
     let sum = 0;
@@ -193,67 +188,67 @@ function calTarget(RetireSpending, SWR) {
 function calSeries(
   age,
   takeHomePay,
-  AnnualSpending,
-  CurrentNetworth,
-  Inflation,
-  ExpectedReturn
+  annualSpending,
+  currentNetworth,
+  inflation,
+  expectedReturn
 ) {
   console.log("type", typeof age);
-  const netWorthSeries = [CurrentNetworth];
+  const networthSeries = [currentNetworth];
   const ageSeries = [age];
 
   //  hardcoded retirement age as 92 //
-  const netReturn = ExpectedReturn - Inflation;
-  const netSavings = takeHomePay - AnnualSpending;
+  const netReturn = expectedReturn - inflation;
+  const netSavings = takeHomePay - annualSpending;
   while (age < 70) {
     newNetWorth = 0;
-    newNetWorth = CurrentNetworth * (1 + netReturn / 100) + netSavings;
-    netWorthSeries.push(Math.round(newNetWorth));
-    CurrentNetworth = newNetWorth;
+    newNetWorth = currentNetworth * (1 + netReturn / 100) + netSavings;
+    networthSeries.push(Math.round(newNetWorth));
+    currentNetworth = newNetWorth;
     age += 1;
     ageSeries.push(age);
   }
-  return [ageSeries, netWorthSeries];
+  return [ageSeries, networthSeries];
 }
 
 function inputValue() {
   const inputArr = [
     "age",
-    "takeHomePay",
-    "AnnualSpending",
-    "RetireSpending",
-    "CurrentNetWorth",
+    "take-home-pay",
+    "annual-spending",
+    "retire-spending",
+    "current-networth",
     "SWR",
-    "Inflation",
-    "IncomeGrowthRate",
-    "ExpectedReturn",
+    "inflation",
+    // "income-growth-rate",
+    "expected-return"
   ];
   const inputArrLen = inputArr.length;
-  const valueArr = [32, 60000, 24000, 36000, 200000, 2, 2, 2, 10];
+  const valueArr = [32, 60000, 24000, 36000, 200000, 2, 2, 10]; //remove 2
   for (let i = 0; i < inputArrLen; i++) {
     document.getElementById(inputArr[i]).value = valueArr[i];
   }
   updateInput();
 }
 
-//const alphavantageKey = ['NA77STNM2IHMFJSF']
-const generateQueryUrl = (queryTerm) => {
-  return `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${queryTerm}&apikey=NA77STNM2IHMFJSF`;
-};
+// //const alphavantageKey = ['NA77STNM2IHMFJSF']
+// const generateQueryUrl = (queryTerm) => {
+//   return `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${queryTerm}&apikey=NA77STNM2IHMFJSF`;
+// };
 
-const fetchData = async (ticker, numYear) => {
-  try {
-    const response = await fetch(generateQueryUrl(ticker));
-    const data = await response.json();
-    // console.log(data)
-    renderStock(data, numYear);
-  } catch (err) {
-    console.log("err: ", err);
-  }
-};
+// const fetchData = async (ticker, numYear) => {
+//   try {
+//     const response = await fetch(generateQueryUrl(ticker));
+//     const data = await response.json();
+//     // console.log(data)
+//     renderStock(data, numYear);
+//   } catch (err) {
+//     console.log("err: ", err);
+//   }
+// };
 
 function dropDownChange() {
-  const selectValue = document.getElementById("investmentSelect");
+  const selectValue = document.getElementById("investment-select");
   if (selectValue.value != "Based 10-yr historical returns on") {
     console.log(requestData(selectValue.value, 10));
   }
@@ -282,5 +277,141 @@ function renderStock(data, numYear) {
   const initialIndex =
     data["Monthly Adjusted Time Series"][lastDate]["5. adjusted close"];
   const outputReturn = ((finalIndex / initialIndex) ** (1 / numYear) - 1) * 100;
-  document.getElementById("ExpectedReturn").value = outputReturn.toFixed(1);
+  document.getElementById("expected-return").value = outputReturn.toFixed(1);
+}
+
+
+
+function addAutoDecimalToInputs() {
+  const maximumValue =  Number(20).toString();
+  const minimumValue =  Number(0).toString();
+
+  [
+    // "expected-return",
+     "SWR", 
+     "inflation", 
+    //  "income-growth-rate"
+  ].forEach((id) => {
+    new AutoNumeric(`#${id}`, {
+      suffixText: "%",
+      maximumValue,
+      minimumValue,
+      decimalPlaces: 1,
+    });
+  });
+}
+
+function sendEmail() {
+  const emailAddress = document.getElementById("userEmail").value
+  const output = emailOutput()
+  console.log(output[0], output[1])
+    Email.send({
+      Host : "smtp.elasticemail.com",
+      Username : "gatestemail123@gmail.com",
+      Password : "6E02DBBC25F405DC86ECD2F6DCE3FCCD73B7",
+      To : emailAddress,
+      From : "gatestemail123@gmail.com",
+      Subject : output[1],
+      Body : output[0]
+      }).then(
+        message => alert(message)
+      );
+  document.getElementById("emailData").style.display = "none";
+}
+
+function addAutoDollarToInputs() {
+  const maximumValue =  Number(10_000_000).toString();
+  const minimumValue =  Number(0).toString();
+
+  [
+    "take-home-pay",
+    "annual-spending",
+    "retire-spending",
+    "current-networth"
+  ].forEach((id) => {
+    new AutoNumeric(`#${id}`, {
+      currencySymbol: "$",
+      digitGroupSeparator: ",",
+      maximumValue,
+      minimumValue,
+    });
+  });
+}
+
+function addBootstrapTooltips() {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(dom => {
+    new bootstrap.Tooltip(dom);
+  })
+}
+
+
+function addEventListeners() {
+  document.addEventListener("DOMContentLoaded", (_) => {
+    addAutoDollarToInputs();
+    addAutoDecimalToInputs();
+    addBootstrapTooltips();
+    console.log("haaska")
+  });
+}
+
+function init() {
+  addEventListeners();
+}
+
+init();
+
+
+
+function emailOutput() {
+  const inputArr = [
+    "age",
+    "take-home-pay",
+    "annual-spending",
+    "retire-spending",
+    "current-networth",
+    "SWR",
+    "inflation",
+    // "income-growth-rate",
+    "expected-return"
+  ];
+  const inputArrLen = inputArr.length;
+  const inputDict = {};
+  for (let i = 0; i < inputArrLen; i++) {
+    if (document.getElementById(inputArr[i]).value) {
+      const idTag = "#" + inputArr[i];
+      inputDict[inputArr[i]] =
+        parseFloat(document.getElementById(inputArr[i]).value) ||
+        AutoNumeric.getNumber(idTag);
+    }
+  }
+    const targetRetireValue = calTarget(
+      inputDict['retire-spending'],
+      inputDict.SWR
+    );
+    inputDict["retirementTarget"] = targetRetireValue;
+    const chartArr = calSeries(
+      inputDict.age,
+      inputDict['take-home-pay'],
+      inputDict['annual-spending'],
+      inputDict['current-networth'],
+      inputDict['inflation'],
+      inputDict['expected-return']
+    );
+    const yearToFI = checkNumYear(targetRetireValue, chartArr[1]);
+    const string = `You can reach Financial Independence in ${yearToFI} years with $${targetRetireValue
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`;
+    const message = `Assumptions: 
+                    Current Age: $${inputDict.age},
+                    Current Take Home Pay: $${inputDict['take-home-pay']},
+                    Current Annual Expenditure: $${inputDict['annual-spending']},
+                    Inflation: ${inputDict['inflation']}%,
+                    Safe Withdrawal Rate: ${inputDict.SWR}%,
+                    Retirement Expenditure: $${inputDict['retire-spending']}
+                    Expected Return: ${inputDict['expected-return']}%,
+                    Current Networth: $${inputDict['current-networth']},
+                    `
+    console.log(message)
+    const output = [message,string]
+    return output
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My FIRE Calculator</title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -11,11 +12,17 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    <head>
+      <script src="https://smtpjs.com/v3/smtp.js"></script>  
+  </head>
   </head>
   <body>
     <h1>FIRE Calculator</h1>
+    <div>
+      
+    </div>
     <!-- alignment out of  -->
-    <div class="container">
+    <div class="container" id="inputdiv">
       <div class="row">
         <div class="col-md-2">
           <label for="age">Current Age</label>
@@ -40,46 +47,46 @@
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Input Annual Salary (Post Tax)"
-            id="takeHomePay"
+            id="take-home-pay"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$60,000"
           />
         </div>
         <div class="col-md-2">
-          <label for="AnnualSpending">Annual Spending</label>
+          <label for="annual-spending">Annual Spending</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Input Annual Expenses"
-            id="AnnualSpending"
+            id="annual-spending"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$36,000"
           />
         </div>
         <div class="col-md-2">
-          <label for="RetireSpending">Retire Spending</label>
+          <label for="retire-spending">Retire Spending</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Input Est Retirement Annual Expenses"
-            id="RetireSpending"
+            id="retire-spending"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$24,000"
           />
         </div>
         <div class="col-md-3">
-          <label for="CurrentNetWorth">Current Net Worth</label>
+          <label for="current-networth">Current Net Worth</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Input liquid investable networth"
-            id="CurrentNetWorth"
+            id="current-networth"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="$100,000"
@@ -90,11 +97,11 @@
       <div class="row">
         <div class="col-md-4">
           <div class="dropdown">
-            <label for="ExpectReturnSelection"
+            <label for="expect-return-selection"
               >Obtain Expected Return dependent on asset allocation</label
             >
             <select
-              id="investmentSelect"
+              id="investment-select"
               onchange="dropDownChange()"
               class="form-select"
               aria-label="Default select example"
@@ -106,11 +113,11 @@
           </div>
         </div>
         <div class="col-md-4">
-          <label for="Expected Return">Expected Return</label>
+          <label for="expected-return">Expected Return</label>
           <input
             type="text"
-            eadonly="readonly"
-            id="ExpectedReturn"
+            readonly="readonly"
+            id="expected-return"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="Based on Selection"
@@ -119,7 +126,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="SafeWithdrawalRate">Safe Withdrawal Rate</label>
           <input
             type="text"
@@ -132,35 +139,35 @@
             placeholder="4%"
           />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="InflationRate">Inflation Rate</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Historically 2-4%"
-            id="Inflation"
+            id="inflation"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="3%"
           />
         </div>
-        <div class="col-md-4">
-          <label for="IncomeGrowthRate">Income Growth Rate</label>
+        <!-- <div class="col-md-4">
+          <label for="income-growth-rate">Income Growth Rate</label>
           <input
             type="text"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Expected Annual Pay Increment in %"
-            id="IncomeGrowthRate"
+            id="income-growth-rate"
             onchange="updateInput(this.value)"
             class="form-control"
             placeholder="2%"
-          />
+          /> -->
         </div>
       </div>
     </div>
-    <div>
+    <!-- <div>
       <br />
       <button
         type="button"
@@ -171,32 +178,43 @@
         test input data
       </button>
       <br />
-    </div>
+    </div> -->
 
     <div>
       <br />
       <h2 id="first">When can I finally stop working ?</h2>
     </div>
 
-    <!-- <div id="emailData">
-      <form class="form-inline align-items-end">
-        <div class="form-group col-md-4">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">Send a copy of the data to my email</div>
+    <div id="emailData">
+      <form class="row g-4">
+        <div class="col-md-4">
+          <input type="email" class="form-control" id="userEmail" placeholder="Email me the results">
         </div>
-
-      <div class="form-group col-md-4">
-        <button type="submit" class="btn btn-primary">Send</button>
-      </div>
+        <div class="col-md-4">
+          <button
+          type="button"
+          class="btn btn-primary"
+          id="fill"
+          onclick="sendEmail()"
+        >
+          Submit
+        </button>
+        </div>
       </form>
-    </div>
-  -->
+  </div>
+
+  
+ 
 
     <div class="chart-container">
       <canvas id="myChart"></canvas>
     </div>
-
+    <div class="explainer">
+      <h5>How to calculate FIRE</h5>
+      <p>The Financial Independence, Retire Early (FIRE) movement is a movement of young people working hard and saving as much as possible with one goal in mind: To save enough money that they can retire before the traditional retirement age.</p>
+      <p> Retirement = Annual retirement spending / SWR</p>
+      <p> Networth time-series: Last Networth * Expected Return + (Take Home Pay - Annual Spending) </p>
+    </div>
     <script src="main.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
@@ -204,6 +222,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/autonumeric"></script>
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"

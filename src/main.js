@@ -44,10 +44,12 @@ function updateInput() {
     chartArr[0] = chartArr[0].slice(0, yearToPlot)
     chartArr[1] = chartArr[1].slice(0, yearToPlot)
     createChart(chartArr, targetRetireValue, yearToPlot)
-
-    const string = `You will reach Financial Independence in ${yearToFI} years with $${targetRetireValue
+    let string = `You will reach Financial Independence in ${yearToFI} years with $${targetRetireValue
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`
+    if (yearToFI <0) {
+        string = 'You will never reach Financial Independence, you need to cut your retirement spending or increase your income (net of expenses)'
+      }
     document.getElementById("first").innerHTML = string
     inputDict["retirementObjective"] = string
     document.getElementById("emailData").style.display = "block"
@@ -184,6 +186,7 @@ function inputValue() {
 function dropDownChange() {
   const selectValue = document.getElementById("investment-select")
   if (selectValue.value != "Based 10-yr historical returns on") {
+    console.log(requestData(selectValue.value, 10));
   }
 }
 
@@ -212,23 +215,6 @@ function renderStock(data, numYear) {
   document.getElementById("expected-return").value = outputReturn.toFixed(1)
 }
 
-function addAutoDecimalToInputs() {
-  const maximumValue = Number(20).toString()
-  const minimumValue = Number(0).toString()
-  [
-    // "expected-return",
-    "SWR",
-    "inflation"
-    //  "income-growth-rate"
-  ].forEach((id) => {
-    new AutoNumeric(`#${id}`, {
-      suffixText: "%",
-      maximumValue,
-      minimumValue,
-      decimalPlaces: 1,
-    })
-  })
-}
 
 function emailOutput() {
   const inputArr = [
@@ -266,9 +252,12 @@ function emailOutput() {
     inputDict["expected-return"]
   );
   const yearToFI = checkNumYear(targetRetireValue, chartArr[1])
-  const string = `You can reach Financial Independence in ${yearToFI} years with $${targetRetireValue
+  let string = `You will reach Financial Independence in ${yearToFI} years with $${targetRetireValue
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`;
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} in Networth`
+  if (yearToFI <0) {
+      string = 'You will never reach Financial Independence, you need to cut your retirement spending or increase your income (net of expenses)'
+    }
   const message = `Assumptions: 
                     Current Age: $${inputDict.age},
                     Current Take Home Pay: $${inputDict["take-home-pay"]},
@@ -301,21 +290,32 @@ function sendEmail() {
 function addAutoDollarToInputs() {
   const maximumValue = Number(10_000_000).toString()
   const minimumValue = Number(0).toString()
-
-  [
-    "take-home-pay",
-    "annual-spending",
-    "retire-spending",
-    "current-networth"
-  ].forEach((id) => {
+  const arr = [ "take-home-pay", "annual-spending",  "retire-spending",  "current-networth"]
+  arr.forEach((id) => {
     new AutoNumeric(`#${id}`, {
       currencySymbol: "$",
       digitGroupSeparator: ",",
       maximumValue,
       minimumValue,
-    });
-  });
+    })
+  })
 }
+
+
+function addAutoDecimalToInputs() {
+  const maximumValue = Number(20).toString()
+  const minimumValue = Number(0).toString()
+  const arr = ["SWR","inflation"  ]
+  arr.forEach((id) => {
+    new AutoNumeric(`#${id}`, {
+      suffixText: "%",
+      maximumValue,
+      minimumValue,
+      decimalPlaces: 1,
+    })
+  })
+}
+
 
 function addBootstrapTooltips() {
   document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((dom) => {
@@ -336,4 +336,6 @@ function init() {
 }
 
 init();
+
+console.log('est')
 

@@ -2,6 +2,8 @@
 
 General Assembly - Software Engineering Immersive Project 1 
 
+Please use Project_complete Branch
+
 Link:  https://lkmh.github.io/GA_Project1_FIRECalculator/src/ 
 
 ## Features
